@@ -18,7 +18,7 @@ import com.hazoc.cursomc.domain.enums.EstadoPagamento;
 public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id	
+	@Id
 	private Integer id;
 	private Integer estado;
 	@JsonIgnore
@@ -26,14 +26,14 @@ public abstract class Pagamento implements Serializable {
 	@JoinColumn(name = "pedido_id")
 	@MapsId
 	private Pedido pedido;
-	
+
 	public Pagamento() {
 	}
 
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		super();
 		this.id = id;
-		this.estado = estado.getCod();
+		this.estado = (estado == null) ? null : estado.getCod();
 		this.pedido = pedido;
 	}
 
@@ -86,5 +86,4 @@ public abstract class Pagamento implements Serializable {
 		return true;
 	}
 
-	
 }

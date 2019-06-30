@@ -21,22 +21,17 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
-	
+
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto nao encontrado! id: " + id + ", Tipo: " + Cliente.class.getName()));
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto nao encontrado! id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
-	
+
 	public Cliente update(Cliente obj) {
 		Cliente newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
-	}
-	
-	private void updateData(Cliente newObj, Cliente obj) {
-		newObj.setNome(obj.getNome());
-		newObj.setEmail(obj.getEmail());
-		
 	}
 
 	public void delete(Integer id) {
@@ -47,18 +42,24 @@ public class ClienteService {
 			throw new DataIntegrityException("Não e possive excluir a entidades relacionadas.");
 		}
 	}
-	
-	public List<Cliente> findAll(){
+
+	public List<Cliente> findAll() {
 		return repo.findAll();
 	}
-	
-	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+
+	private void updateData(Cliente newObj, Cliente obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
+
+	}
+
+	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
-	
+
 	public Cliente fromDTO(ClienteDTO objDTO) {
-		
-		return new Cliente(objDTO.getId(),objDTO.getNome(),objDTO.getEmail(),null,null);
+
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
 	}
 }
