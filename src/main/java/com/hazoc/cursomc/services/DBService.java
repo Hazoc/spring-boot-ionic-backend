@@ -20,6 +20,7 @@ import com.hazoc.cursomc.domain.PagamentoComCartao;
 import com.hazoc.cursomc.domain.Pedido;
 import com.hazoc.cursomc.domain.Produto;
 import com.hazoc.cursomc.domain.enums.EstadoPagamento;
+import com.hazoc.cursomc.domain.enums.Perfil;
 import com.hazoc.cursomc.domain.enums.TipoCliente;
 import com.hazoc.cursomc.repositories.CategoriaRepository;
 import com.hazoc.cursomc.repositories.CidadeRepository;
@@ -116,13 +117,19 @@ public class DBService {
 		Cliente cli1 = new Cliente(null, "Maria Silva", "hazoc.dev.test@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, pe.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
 		
+		Cliente cli2 = new Cliente(null, "Daniel", "hazoccc@gmail.com", "31628382740", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cli2.addPerfil(Perfil.ADMIN);
+		cli2.getTelefones().addAll(Arrays.asList("27363323, 988567893"));
+		
 		Endereco e1 = new Endereco(null, "rua flores", "300", "apto 203", "jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco(null, "avenida matos", "105", "sala 800", "Centro", "38777012", cli1, c2);
+		Endereco e3 = new Endereco(null, "rua Alvares chochilo", "30", "apto 23", "jardim ja foi", "38771234", cli2, c1);
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e3));
 		
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2, e3));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
